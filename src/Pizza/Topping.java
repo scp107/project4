@@ -1,14 +1,16 @@
+package Pizza;
+
 public enum Topping {
     PEPPERONI(),
     SAUSAGE(),
     MUSHROOMS(),
     GREENPEPPERS(),
     ONIONS(),
-    BLACKOLIVES(),
-    BACON(),
+    BBQCHICKEN(),
+    PROVOLONE(),
     TOMATOES(),
-    PINEAPPLE(),
-    CHICKEN(),
+    CHEDDAR(),
+    HAM(),
     SPINACH(),
     BEEF();
 }
