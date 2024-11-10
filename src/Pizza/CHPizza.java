@@ -2,7 +2,7 @@ package Pizza;
 
 import java.util.ArrayList;
 
-public class NYPizza implements PizzaFactory {
+public class CHPizza implements PizzaFactory {
     private Size size;
     private ArrayList<Topping> toppings;
     private Curst curst;
@@ -15,7 +15,7 @@ public class NYPizza implements PizzaFactory {
         newToppings.add(Topping.GREENPEPPERS);
         newToppings.add(Topping.ONIONS);
         newToppings.add(Topping.MUSHROOMS);
-        return new Pizza(newToppings, Curst.Brooklyn, size) {
+        return new Pizza(newToppings, Curst.DeepDish, size) {
             @Override
             public double price() {
                 return size.getDeluxe();
@@ -30,7 +30,7 @@ public class NYPizza implements PizzaFactory {
         newToppings.add(Topping.PEPPERONI);
         newToppings.add(Topping.BEEF);
         newToppings.add(Topping.HAM);
-        return new Pizza(newToppings, Curst.Handtossed,size) {
+        return new Pizza(newToppings, Curst.Stuffed,size) {
             @Override
             public double price() {
                 return size.getMeatzza();
@@ -45,7 +45,7 @@ public class NYPizza implements PizzaFactory {
         newToppings.add(Topping.GREENPEPPERS);
         newToppings.add(Topping.CHEDDAR);
         newToppings.add(Topping.PROVOLONE);
-        return new Pizza(newToppings, Curst.Thin,size) {
+        return new Pizza(newToppings, Curst.Pan,size) {
             @Override
             public double price() {
                 return size.getChicken();
@@ -58,7 +58,7 @@ public class NYPizza implements PizzaFactory {
         DIY diyInstance = new DIY();
         ArrayList<Topping> newToppings = diyInstance.ChooseTopping(toppings);
         double Tprice= diyInstance.countTPrice();
-        return new Pizza(newToppings, Curst.Handtossed,size) {
+        return new Pizza(newToppings, Curst.Pan,size) {
             @Override
             public double price() {
                 double price= size.getBuo()+Tprice;
@@ -66,6 +66,5 @@ public class NYPizza implements PizzaFactory {
             }
         };
     }
-
 
 }
