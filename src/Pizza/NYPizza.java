@@ -55,17 +55,15 @@ public class NYPizza implements PizzaFactory {
 
     @Override
     public Pizza createBuildYourOwn(Size size, ArrayList<Topping> toppings) {
-        DIY diyInstance = new DIY();
-        ArrayList<Topping> newToppings = diyInstance.ChooseTopping(toppings);
-        double Tprice= diyInstance.countTPrice();
-        return new Pizza(newToppings, Curst.Handtossed,size) {
+        return new Pizza(toppings, Curst.Handtossed,size) {
             @Override
             public double price() {
-                double price= size.getBuo()+Tprice;
+                double price= size.getBuo()+(toppings.size()*1.69);
                 return price;
             }
         };
     }
+
 
 
 }

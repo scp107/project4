@@ -30,7 +30,7 @@ public class CHPizza implements PizzaFactory {
         newToppings.add(Topping.PEPPERONI);
         newToppings.add(Topping.BEEF);
         newToppings.add(Topping.HAM);
-        return new Pizza(newToppings, Curst.Stuffed,size) {
+        return new Pizza(newToppings, Curst.Stuffed, size) {
             @Override
             public double price() {
                 return size.getMeatzza();
@@ -45,7 +45,7 @@ public class CHPizza implements PizzaFactory {
         newToppings.add(Topping.GREENPEPPERS);
         newToppings.add(Topping.CHEDDAR);
         newToppings.add(Topping.PROVOLONE);
-        return new Pizza(newToppings, Curst.Pan,size) {
+        return new Pizza(newToppings, Curst.Pan, size) {
             @Override
             public double price() {
                 return size.getChicken();
@@ -57,14 +57,13 @@ public class CHPizza implements PizzaFactory {
     public Pizza createBuildYourOwn(Size size, ArrayList<Topping> toppings) {
         DIY diyInstance = new DIY();
         ArrayList<Topping> newToppings = diyInstance.ChooseTopping(toppings);
-        double Tprice= diyInstance.countTPrice();
-        return new Pizza(newToppings, Curst.Pan,size) {
+        double Tprice = diyInstance.countTPrice();
+        return new Pizza(newToppings, Curst.Pan, size) {
             @Override
             public double price() {
-                double price= size.getBuo()+Tprice;
+                double price = size.getBuo() + Tprice;
                 return price;
             }
         };
     }
-
 }

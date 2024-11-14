@@ -1,12 +1,17 @@
 package Pizza;
-
+import javafx.scene.control.ListView;
+import javafx.scene.control.SelectionMode;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
+import java.util.ArrayList;
+
 public class Control {
+    public RadioButton CHDIY ;
+    public RadioButton NYDIY ;
     @FXML
     public ComboBox<String> PizzaT;
     @FXML
@@ -32,8 +37,22 @@ public class Control {
     public Button DeleteAll;
     @FXML
     public TextArea subTotalLabelDelete;
+    @FXML
+    public ListView<Topping> ToppingList;
+    @FXML
+    public TextArea OutPuts3;
+    @FXML
+    public Button startDIY;
+    @FXML
+    public ComboBox<String> SizeDIY;
+    /*
+        the value that using inside the program.
+     */
     private OrderList orderList = new OrderList();
     private Order CurrentOrder=new Order();
+    private double price=0.0;
+    private ArrayList<Double> priceList=new ArrayList<>();
+
     public void initialize() {
         //initialize the P1
         ToggleGroup toggleGroup = new ToggleGroup();
@@ -45,7 +64,24 @@ public class Control {
             }
             else if(newValue == CHKnow) { NYKnow.setSelected(false);}
         });
+        //initialize the P2:
+        subTotalLabelDelete.setText(price+"");
+        //initialize the P3:
+        ObservableList<Topping> TempTopping = FXCollections.observableArrayList(Topping.values());
+        ToppingList.setItems(TempTopping);
+        ToppingList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        ToggleGroup toggleGroupP4 = new ToggleGroup();
+        NYDIY.setToggleGroup(toggleGroupP4);
+        CHDIY.setToggleGroup(toggleGroupP4);
+        toggleGroupP4.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue == NYDIY) {
+                CHDIY.setSelected(false);
+            }
+            else if(newValue == CHDIY) {NYDIY.setSelected(false);}
+        });
+        OutPuts3.appendText(price+"");
     }
+
     public void CreateKnow(ActionEvent actionEvent) {
         String type=PizzaT.getSelectionModel().getSelectedItem();
         String size=SizeIn.getSelectionModel().getSelectedItem();
@@ -66,45 +102,136 @@ public class Control {
         }
         if(NYKnow.isSelected()) {
             NYPizza NY=new NYPizza();
-            if(type.equals("Deluxe")) {CurrentPizza=NY.createDeluxe(CurrentSize);subTotalLabel.setText(STR."\{CurrentSize.getDeluxe()}");}
-            else if (type.equals("BBQChicken")) {CurrentPizza=NY.createBBQChicken(CurrentSize);subTotalLabel.setText(STR."\{CurrentSize.getChicken()}");}
-            else if(type.equals("Meatzza")) {CurrentPizza=NY.createMeatzza(CurrentSize);subTotalLabel.setText(STR."\{CurrentSize.getMeatzza()}");}
+            if(type.equals("Deluxe")) {CurrentPizza=NY.createDeluxe(CurrentSize);
+                price=price+CurrentSize.getDeluxe();
+                priceList.add(CurrentSize.getDeluxe());
+                priceUpdate();}
+            else if (type.equals("BBQChicken")) {CurrentPizza=NY.createBBQChicken(CurrentSize);
+                price=price+CurrentSize.getChicken();priceList.add(CurrentSize.getChicken());
+                priceUpdate();}
+            else if(type.equals("Meatzza")) {CurrentPizza=NY.createMeatzza(CurrentSize);
+                price=price+CurrentSize.getMeatzza();priceList.add(CurrentSize.getMeatzza());
+                priceUpdate();}
             else{throw new IllegalArgumentException("Ivalid Pizza Type" + type);}
         }
         else if(CHKnow.isSelected()) {
             CHPizza CH=new CHPizza();
-            if(type.equals("Deluxe")) {CurrentPizza=CH.createDeluxe(CurrentSize);subTotalLabel.setText(STR."\{CurrentSize.getDeluxe()}");}
-            else if (type.equals("BBQChicken")) {CurrentPizza=CH.createBBQChicken(CurrentSize);subTotalLabel.setText(STR."\{CurrentSize.getChicken()}");}
-            else if(type.equals("Meatzza")) {CurrentPizza=CH.createMeatzza(CurrentSize);subTotalLabel.setText(STR."\{CurrentSize.getMeatzza()}");}
+            if(type.equals("Deluxe")) {CurrentPizza=CH.createDeluxe(CurrentSize);
+                price=price+CurrentSize.getDeluxe();priceList.add(CurrentSize.getDeluxe());
+                priceUpdate();}
+            else if (type.equals("BBQChicken")) {CurrentPizza=CH.createBBQChicken(CurrentSize);
+                price=price+CurrentSize.getChicken();priceList.add(CurrentSize.getChicken());
+                priceUpdate();}
+            else if(type.equals("Meatzza")) {CurrentPizza=CH.createMeatzza(CurrentSize);
+                price=price+CurrentSize.getMeatzza();priceList.add(CurrentSize.getMeatzza());
+                priceUpdate();}
             else{throw new IllegalArgumentException("Ivalid Pizza Type" + type);}
         }
         else{
             throw new IllegalArgumentException("Ivalid Curst");
         }
-        CurrentOrder=new Order();
         CurrentOrder.add(CurrentPizza);
         String output1=CurrentOrder.toString();
         outputPage1.appendText(STR."\{output1}"); //for test use
     }
 
     /*
-        show the current list of pizza in current order.
+     Update all the price window in every page.
+     */
+    public void priceUpdate(){
+        price=Math.round(price * 100.0) / 100.0;
+        subTotalLabelDelete.setText(price+"");
+        subTotalLabel.setText(price+"");
+        OutPuts3.setText(price+"");
+    }
+    /*
+        show the current list of pizza in current order.(used in page2, to initialize the checking table)
      */
     public void showDelete(ActionEvent actionEvent) {
         ObservableList<Pizza> OPizzas = FXCollections.observableArrayList();
-        for(int i=0;i<CurrentOrder.getPizzas().size();i++) {
-            OPizzas.add(CurrentOrder.getPizza(i));
+        for (Pizza pizza : CurrentOrder.getPizzas()) {
+            OPizzas.add(pizza);
         }
         DeleteOrderList.setItems(OPizzas);
+        priceUpdate();
     }
+    /*
+        Deleted the current pizza that being selected in listView
+     */
+    public void DeleteTarget(ActionEvent actionEvent) {
+        int targetNum=DeleteOrderList.getSelectionModel().getSelectedIndex();
+        double deletePrice=priceList.get(targetNum);
+        price=price-deletePrice;
+        CurrentOrder.deletePizza(targetNum);
+        showDelete(actionEvent);
+        priceUpdate();
+    }
+    /*
+        Deleted everything in current order.
+     */
+    public void DeleteAll(ActionEvent actionEvent) {
+        CurrentOrder=new Order();
+        priceList.clear();
+        price=0.0;
+        priceUpdate();
+        showDelete(actionEvent);
+    }
+    /*
+        create a DIY order
+     */
+    public void HandleDIY(ActionEvent actionEvent) {
+        try{
+            ArrayList<Topping>ChoosedTopping=new ArrayList<>(ToppingList.getSelectionModel().getSelectedItems());
+            String currentSize=SizeDIY.getSelectionModel().getSelectedItem();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("An error occurred: " + e.getMessage());
+        }
+        ArrayList<Topping>ChoosedTopping=new ArrayList<>(ToppingList.getSelectionModel().getSelectedItems());
+        String size=SizeDIY.getSelectionModel().getSelectedItem();
+        Size CurrentSize;
+        switch (size){
+            case "Small":
+                CurrentSize=Size.Small;
+                break;
+            case "Medium":
+                CurrentSize=Size.Medium;
+                break;
+            case "Large":
+                CurrentSize=Size.Large;
+                break;
+            default:
+                throw new IllegalArgumentException("Ivalid Size" + size);
+        }
+        if(ChoosedTopping.size()<=7) {
+            if (NYDIY.isSelected()) {
+                NYPizza NY = new NYPizza();
+                Pizza CurrentPizza = NY.createBuildYourOwn(CurrentSize, ChoosedTopping);
+                double newPrice = NY.createBuildYourOwn(CurrentSize, ChoosedTopping).price();
+                priceList.add(newPrice);
+                price = price + newPrice;
+                CurrentOrder.add(CurrentPizza);
+                priceUpdate();
+            } else if (CHDIY.isSelected()) {
+                CHPizza CH = new CHPizza();
+                Pizza CurrentPizza = CH.createBuildYourOwn(CurrentSize, ChoosedTopping);
+                double newPrice = CH.createBuildYourOwn(CurrentSize, ChoosedTopping).price();
+                priceList.add(newPrice);
+                price = price + newPrice;
+                price = price + newPrice;
+                CurrentOrder.add(CurrentPizza);
+                priceUpdate();
+            }
+        }
+        else{
+            OutPuts3.appendText("Too many toppings!");
+        }
+    }
+
     public void NYPizza(ActionEvent actionEvent) {
     }
 
     public void CHPizza(ActionEvent actionEvent) {
-    }
-
-    public void HandleDIY(ActionEvent actionEvent) {
-        
     }
 
 }

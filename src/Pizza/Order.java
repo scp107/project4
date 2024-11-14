@@ -38,6 +38,10 @@ public class Order {
         this.pizzas = pizzas;
     }
 
+    public void deletePizza(int index){
+        pizzas.remove(index);
+    }
+
     @Override
     public String toString(){
         String output = "";
