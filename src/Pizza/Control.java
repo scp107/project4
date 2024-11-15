@@ -6,6 +6,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.util.ArrayList;
 
@@ -45,6 +46,23 @@ public class Control {
     public Button startDIY;
     @FXML
     public ComboBox<String> SizeDIY;
+    //page 4 elements
+    @FXML
+    public TableView<PizzaAndPrice> Output4Detail;
+    @FXML
+    public TextArea Output4Price;
+    @FXML
+    public Button checkOrder;
+    @FXML
+    public TextArea Output4;
+    @FXML
+    private TableColumn<PizzaAndPrice, Size> sizeColumn;
+    @FXML
+    private TableColumn<PizzaAndPrice, ArrayList<Topping>> toppingColumn;
+    @FXML
+    private TableColumn<PizzaAndPrice, Curst> curseColumn;
+    @FXML
+    private TableColumn<PizzaAndPrice, Double> priceColumn;
     /*
         the value that using inside the program.
      */
@@ -80,6 +98,11 @@ public class Control {
             else if(newValue == CHDIY) {NYDIY.setSelected(false);}
         });
         OutPuts3.appendText(price+"");
+        //initialize the P4:
+        sizeColumn.setCellValueFactory(new PropertyValueFactory<>("size"));
+        toppingColumn.setCellValueFactory(new PropertyValueFactory<>("toppingsString"));
+        curseColumn.setCellValueFactory(new PropertyValueFactory<>("crustString"));
+        priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
     }
 
     public void CreateKnow(ActionEvent actionEvent) {
@@ -143,6 +166,7 @@ public class Control {
         subTotalLabelDelete.setText(price+"");
         subTotalLabel.setText(price+"");
         OutPuts3.setText(price+"");
+        Output4Price.setText(price+"");
     }
     /*
         show the current list of pizza in current order.(used in page2, to initialize the checking table)
@@ -227,12 +251,32 @@ public class Control {
             OutPuts3.appendText("Too many toppings!");
         }
     }
-
-    public void NYPizza(ActionEvent actionEvent) {
+    /*
+        print out the page 4's pizza list.
+     */
+    public void InitializePage4(ActionEvent actionEvent) {
+        ObservableList<PizzaAndPrice> pizzaList = FXCollections.observableArrayList();
+        for(int i=0;i<CurrentOrder.getPizzas().size();i++){
+            Pizza TempPizza=CurrentOrder.getPizzas().get(i);
+            pizzaList.add(new PizzaAndPrice(TempPizza, priceList.get(i)));
+        }
+        Output4Detail.setItems(pizzaList);
+        price+=price*0.06625;
+        priceUpdate();
     }
 
-    public void CHPizza(ActionEvent actionEvent) {
+    public void placingOrder(ActionEvent actionEvent) {
+        CurrentOrder.getANumber();
+        CurrentOrder.addPrices(price);
+        if(CurrentOrder.getNumber()!=0 && CurrentOrder.getPrice()!=0){
+            orderList.addOrder(CurrentOrder);
+        }
+        Output4.appendText(orderList.toString());
+        //clear everything for next upcoming order.
+        CurrentOrder=new Order();
+        priceList.clear();
+        price=0.0;
+        priceUpdate();
     }
-
 }
 

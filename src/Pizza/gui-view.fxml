@@ -104,19 +104,22 @@
         </Tab>
         <Tab fx:id="P4" closable="false" text="Placing Order">
             <AnchorPane>
+                <Button fx:id="checkOrder" layoutX="269.0" layoutY="236.0" onAction="#InitializePage4" text="check current order" />
                 <!-- TableView to Display Pizza Order Details -->
                 <TableView fx:id="Output4Detail" layoutX="20" layoutY="20" prefHeight="200" prefWidth="600">
                     <columns>
-                        <TableColumn prefWidth="150" text="Pizza Type" />
-                        <TableColumn prefWidth="150" text="Crust" />
-                        <TableColumn prefWidth="150" text="Topping" />
-                        <TableColumn prefWidth="150" text="Price" />
+                        <TableColumn fx:id="sizeColumn" prefWidth="150" text="Size" />
+                        <TableColumn fx:id="toppingColumn" prefWidth="150" text="Topping" />
+                        <TableColumn fx:id="curseColumn" prefWidth="150" text="Curse" />
+                        <TableColumn fx:id="priceColumn" prefWidth="150" text="Price" />
                     </columns>
                 </TableView>
                 <!-- Subtotal Label -->
                 <Label layoutX="20" layoutY="230" text="Subtotal:" />
                 <!-- TextArea to Display Subtotal Price -->
                 <TextArea fx:id="Output4Price" editable="false" layoutX="80" layoutY="230" prefHeight="11.0" prefWidth="150" wrapText="true" />
+                <Button layoutX="450.0" layoutY="236.0" onAction="#placingOrder" text="placingOrder" />
+                <TextArea fx:id="Output4" editable="false" layoutX="71.0" layoutY="279.0" />
             </AnchorPane>
         </Tab>
         <Tab fx:id="P5" closable="false" text="Check History">

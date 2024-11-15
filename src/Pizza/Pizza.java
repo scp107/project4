@@ -23,6 +23,9 @@ public abstract class Pizza {
     public void setCrust(Curst crust) {this.crust = crust;}
     public Size getSize() {return size;}
     public void setSize(Size size) {this.size = size;}
+    /*
+        size+topping+crust.
+     */
     public String toString(){
         return(""+size.toString()+","+toppings.toString()+","+crust.toString());
     }

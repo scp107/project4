@@ -16,5 +16,12 @@ public class OrderList {
     public int getANumber() {
      return orders.size();
     }
+    public String toString(){
+        String output = "";
+        for(int i=0;i<orders.size();i++){
+            output+=orders.get(i).toString()+"\n";
+        }
+        return output;
+    }
 
 }
