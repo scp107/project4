@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="465.0" prefWidth="480.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Pizza.Control">
+<TabPane fx:id="tabPane">
+    <tabs>
+        <Tab fx:id="P1" closable="false" text="Taking Order">
+            <VBox alignment="TOP_LEFT" spacing="10">
+                <!-- Pizza Type Selection -->
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Label text="Choose Pizza Type:" />
+                    <ComboBox fx:id="PizzaT">
+                        <items>
+                            <FXCollections fx:factory="observableArrayList">
+                                <String fx:value="Deluxe" />
+                                <String fx:value="BBQChicken" />
+                                <String fx:value="Meatzza" />
+                            </FXCollections>
+                        </items>
+                    </ComboBox>
+                </HBox>
+                <!-- Pizza Style Selection -->
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Label text="Choose Pizza Style:" />
+                    <RadioButton fx:id="NYKnow" text="New York" />
+                    <RadioButton fx:id="CHKnow" text="Chicago" />
+                </HBox>
+
+                <!-- Pizza Size Selection -->
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Label text="Choose Size:" />
+                    <ComboBox fx:id="SizeIn">
+                        <items>
+                            <FXCollections fx:factory="observableArrayList">
+                                <String fx:value="Small" />
+                                <String fx:value="Medium" />
+                                <String fx:value="Large" />
+                            </FXCollections>
+                        </items>
+                    </ComboBox>
+                </HBox>
+
+                <!-- Subtotal Label -->
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Label text="Sub Total:" />
+                    <!-- Consider adding a Label or TextField here for displaying the subtotal dynamically -->
+                    <TextArea fx:id="subTotalLabel" editable="false" prefHeight="37.0" prefWidth="104.0" text="0.00" />
+                </HBox>
+               <Button fx:id="setupID" onAction="#CreateKnow" prefHeight="25.0" prefWidth="71.0" text="setup" />
+                <TextArea fx:id="outputPage1" editable="false" prefHeight="305.0" prefWidth="478.0" wrapText="true" />
+            </VBox>
+        </Tab>
+        <Tab fx:id="P2" closable="false" text="Deleting Order">
+            <AnchorPane>
+                <Button fx:id="ShowList" layoutX="409.0" layoutY="14.0" onAction="#showDelete" text="get Current Order" />
+                <ListView fx:id="DeleteOrderList" layoutX="10" layoutY="10" prefHeight="400.0" prefWidth="390.0" />
+                <Button fx:id="DeleteCurrent" layoutX="14.0" layoutY="419.0" onAction="#DeleteTarget" text="Delete Target" />
+                <Button fx:id="DeleteAll" layoutX="134.0" layoutY="419.0" onAction="#DeleteAll" text="Delete All" />
+                <Label layoutX="232.0" layoutY="423.0" text="Sub Total:" />
+                <!-- Consider adding a Label or TextField here for displaying the subtotal dynamically -->
+                <TextArea fx:id="subTotalLabelDelete" editable="false" layoutX="297.0" layoutY="413.0" prefHeight="37.0" prefWidth="104.0" text="0.00" />
+            </AnchorPane>
+        </Tab>
+        <Tab fx:id="P3" closable="false" text="DIY">
+            <AnchorPane>
+                <!-- Radio Buttons for Pizza Type -->
+                <RadioButton fx:id="NYDIY" layoutX="20" layoutY="20" text="New York Style" />
+                <RadioButton fx:id="CHDIY" layoutX="20" layoutY="50" text="Chicago Style" />
+                <!-- Size Label and ComboBox -->
+                <Label layoutX="20" layoutY="90" text="Size:" />
+                <ComboBox fx:id="SizeDIY" layoutX="80" layoutY="90">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="Small" />
+                            <String fx:value="Medium" />
+                            <String fx:value="Large" />
+                        </FXCollections>
+                    </items>
+                </ComboBox>
+                <!-- Topping Label and ComboBox -->
+                <Label layoutX="20" layoutY="130" text="Topping:" />
+                <ListView fx:id="ToppingList" layoutX="80" layoutY="130" prefHeight="211.0" prefWidth="436.0" />
+                <!-- Subtotal Label and Output ComboBox -->
+                <Label layoutX="21.0" layoutY="369.0" text="Subtotal:" />
+                <TextArea fx:id="OutPuts3" editable="false" layoutX="78.0" layoutY="359.0" prefHeight="0.0" prefWidth="71.0" />
+                <!-- Start Button -->
+                <Button fx:id="startDIY" layoutX="264.0" layoutY="365.0" onAction="#HandleDIY" text="Start DIY" />
+            </AnchorPane>
+        </Tab>
+        <Tab fx:id="P4" closable="false" text="Placing Order">
+            <AnchorPane>
+                <Button fx:id="checkOrder" layoutX="269.0" layoutY="236.0" onAction="#InitializePage4" text="check current order" />
+                <!-- TableView to Display Pizza Order Details -->
+                <TableView fx:id="Output4Detail" layoutX="20" layoutY="20" prefHeight="200" prefWidth="600">
+                    <columns>
+                        <TableColumn fx:id="sizeColumn" prefWidth="150" text="Size" />
+                        <TableColumn fx:id="toppingColumn" prefWidth="150" text="Topping" />
+                        <TableColumn fx:id="curseColumn" prefWidth="150" text="Curse" />
+                        <TableColumn fx:id="priceColumn" prefWidth="150" text="Price" />
+                    </columns>
+                </TableView>
+                <!-- Subtotal Label -->
+                <Label layoutX="20" layoutY="230" text="Subtotal:" />
+                <!-- TextArea to Display Subtotal Price -->
+                <TextArea fx:id="Output4Price" editable="false" layoutX="80" layoutY="230" prefHeight="11.0" prefWidth="150" wrapText="true" />
+                <Button layoutX="450.0" layoutY="236.0" onAction="#placingOrder" text="placingOrder" />
+                <TextArea fx:id="Output4" editable="false" layoutX="71.0" layoutY="279.0" />
+            </AnchorPane>
+        </Tab>
+        <Tab fx:id="P5" closable="false" text="Check History">
+        </Tab>
+    </tabs>
+</TabPane>
+
+</AnchorPane>
