@@ -100,6 +100,7 @@
                 <TextArea fx:id="OutPuts3" editable="false" layoutX="78.0" layoutY="359.0" prefHeight="0.0" prefWidth="71.0" />
                 <!-- Start Button -->
                 <Button fx:id="startDIY" layoutX="264.0" layoutY="365.0" onAction="#HandleDIY" text="Start DIY" />
+                <Label layoutX="264.0" layoutY="99.0" text="hold control with click to add multiple toppings " />
             </AnchorPane>
         </Tab>
         <Tab fx:id="P4" closable="false" text="Placing Order">
@@ -110,7 +111,7 @@
                     <columns>
                         <TableColumn fx:id="sizeColumn" prefWidth="150" text="Size" />
                         <TableColumn fx:id="toppingColumn" prefWidth="150" text="Topping" />
-                        <TableColumn fx:id="curseColumn" prefWidth="150" text="Curse" />
+                        <TableColumn fx:id="crustColumn" prefWidth="150" text="Curse" />
                         <TableColumn fx:id="priceColumn" prefWidth="150" text="Price" />
                     </columns>
                 </TableView>
