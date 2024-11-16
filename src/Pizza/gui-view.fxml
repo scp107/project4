@@ -110,7 +110,7 @@
                     <columns>
                         <TableColumn fx:id="sizeColumn" prefWidth="150" text="Size" />
                         <TableColumn fx:id="toppingColumn" prefWidth="150" text="Topping" />
-                        <TableColumn fx:id="curseColumn" prefWidth="150" text="Curse" />
+                        <TableColumn fx:id="crustColumn" prefWidth="150" text="Curse" />
                         <TableColumn fx:id="priceColumn" prefWidth="150" text="Price" />
                     </columns>
                 </TableView>

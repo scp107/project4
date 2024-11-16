@@ -13,4 +13,7 @@ public enum Topping {
     HAM(),
     SPINACH(),
     BEEF();
+    public String toString(){
+        return name();
+    }
 }

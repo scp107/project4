@@ -7,4 +7,9 @@ public enum Curst {
     Thin,
     Stuffed,
     Handtossed;
+
+    @Override
+    public String toString() {
+        return name();
+    }
 }

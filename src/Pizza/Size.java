@@ -27,4 +27,7 @@ public enum Size {
     public double getBuo(){
         return BUO;
     }
+    public String toString(){
+        return name();
+    }
 }

@@ -60,9 +60,11 @@ public class Control {
     @FXML
     private TableColumn<PizzaAndPrice, ArrayList<Topping>> toppingColumn;
     @FXML
-    private TableColumn<PizzaAndPrice, Curst> curseColumn;
+    private TableColumn<PizzaAndPrice, Curst> crustColumn;
     @FXML
     private TableColumn<PizzaAndPrice, Double> priceColumn;
+    @FXML
+    private ArrayList<PizzaAndPrice> pizzaListWithPrice=new ArrayList<>();
     /*
         the value that using inside the program.
      */
@@ -70,7 +72,10 @@ public class Control {
     private Order CurrentOrder=new Order();
     private double price=0.0;
     private ArrayList<Double> priceList=new ArrayList<>();
+    private boolean addtext=true;
+    /*
 
+     */
     public void initialize() {
         //initialize the P1
         ToggleGroup toggleGroup = new ToggleGroup();
@@ -100,8 +105,8 @@ public class Control {
         OutPuts3.appendText(price+"");
         //initialize the P4:
         sizeColumn.setCellValueFactory(new PropertyValueFactory<>("size"));
-        toppingColumn.setCellValueFactory(new PropertyValueFactory<>("toppingsString"));
-        curseColumn.setCellValueFactory(new PropertyValueFactory<>("crustString"));
+        toppingColumn.setCellValueFactory(new PropertyValueFactory<>("toppings"));
+        crustColumn.setCellValueFactory(new PropertyValueFactory<>("crust"));
         priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
     }
 
@@ -157,7 +162,6 @@ public class Control {
         String output1=CurrentOrder.toString();
         outputPage1.appendText(STR."\{output1}"); //for test use
     }
-
     /*
      Update all the price window in every page.
      */
@@ -258,25 +262,36 @@ public class Control {
         ObservableList<PizzaAndPrice> pizzaList = FXCollections.observableArrayList();
         for(int i=0;i<CurrentOrder.getPizzas().size();i++){
             Pizza TempPizza=CurrentOrder.getPizzas().get(i);
+            pizzaListWithPrice.add(new PizzaAndPrice(TempPizza,priceList.get(i)));
             pizzaList.add(new PizzaAndPrice(TempPizza, priceList.get(i)));
         }
         Output4Detail.setItems(pizzaList);
-        price+=price*0.06625;
-        priceUpdate();
+        if(addtext){
+            price+=price*0.06625;
+            priceUpdate();
+            addtext=false;
+        }
     }
-
+    /*
+        placing the order;
+     */
     public void placingOrder(ActionEvent actionEvent) {
         CurrentOrder.getANumber();
         CurrentOrder.addPrices(price);
         if(CurrentOrder.getNumber()!=0 && CurrentOrder.getPrice()!=0){
             orderList.addOrder(CurrentOrder);
         }
-        Output4.appendText(orderList.toString());
+        for(int i=0;i<pizzaListWithPrice.size();i++){
+            Output4.appendText(pizzaListWithPrice.get(i).toString()+"\n");
+            pizzaListWithPrice.remove(i);
+        }
+        Output4.appendText("\n your order number: "+CurrentOrder.getNumber()+"\n your subtotal: "+CurrentOrder.getPrice()+"\n");
         //clear everything for next upcoming order.
         CurrentOrder=new Order();
         priceList.clear();
         price=0.0;
         priceUpdate();
+        Output4Detail.getItems().remove(0, Output4Detail.getItems().size());
     }
 }
 

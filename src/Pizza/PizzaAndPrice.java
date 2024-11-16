@@ -38,13 +38,8 @@ public class PizzaAndPrice {
     public void setPrice(double price) {
         this.price = price;
     }
-    // 新增的 String getter 方法，用于 TableView 显示
-    public String getToppingsString() {
-        // 将 ArrayList<Topping> 转换为 String 表示
-        return toppings.stream().map(Topping::name).collect(Collectors.joining(", "));
-    }
 
-    public String getCrustString() {
-        return crust.name(); // 或者使用 crust.toString()，根据您的需要
+    public String toString() {
+        return(""+size.toString()+","+toppings.toString()+","+crust.toString()+","+price);
     }
 }
